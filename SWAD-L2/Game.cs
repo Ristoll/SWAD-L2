@@ -37,7 +37,7 @@
             }
         }
         public bool IsLaunched { get; set; }        
-        public Game(string name, EPlatform platform, Hardware hardware)
+        protected Game(string name, EPlatform platform, Hardware hardware)
         {
             Name = name;
             Platform = platform;

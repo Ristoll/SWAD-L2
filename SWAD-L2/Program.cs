@@ -4,16 +4,19 @@
     {
         static void Main()
         {
-            List<EController> testControllers = new List<EController>() {EController.Gamepad, EController.Mouse };
-            Hardware desktopHardware = new Hardware(4, 4, 4,4, Hardware.ControllersForPC());
-            Hardware mobileHardware = new Hardware(3, 2, 4, 5, Hardware.ControllersForMobile());
-            Hardware consoleHardware = new Hardware(4, 5, 4, 4, Hardware.ControllersForConsole());
+            Hardware desktopHardware = new Hardware(4, 4, 4,15, Hardware.ControllersForPC());
+            Hardware mobileHardware = new Hardware(3, 2, 4, 40, Hardware.ControllersForMobile());
+            Hardware consoleHardware = new Hardware(4, 5, 4, 100, Hardware.ControllersForConsole());
 
             User desktopUser = new User(EPlatform.Desktop, desktopHardware);
             User mobileUser = new User(EPlatform.Mobile, mobileHardware);
             User consoleUser = new User(EPlatform.Console, consoleHardware);
 
             List<User> users = new List<User>() {desktopUser, mobileUser, consoleUser};
+            UserObserver observer = new UserObserver();
+            desktopUser.Subscribe(observer);
+            mobileUser.Subscribe(observer);
+            consoleUser.Subscribe(observer);
 
             Hardware minecraftHardware = new Hardware(3, 4, 2, 15, Hardware.ControllersForPC());
             Adventure minecraftGameA = new Adventure("Minecraft", EPlatform.Desktop, minecraftHardware);

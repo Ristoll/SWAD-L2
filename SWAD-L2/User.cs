@@ -1,8 +1,8 @@
 ﻿namespace APSW_L_1
 {
-    public class User
+    public class User //ГЕНЕРАТОР ПОДІЙ
     {
-        public static event Action<string>? OnUserEvent;
+        private readonly List<IUserObserver> observers = new List<IUserObserver>();
         public EPlatform Platform { get; }
         public Hardware Hardware { get; }
         public bool NetworkConnection { get; set; } = true;
@@ -10,14 +10,7 @@
         public bool IsPlaying { get; set; } = false;
         public bool IsStreaming { get; set; } = false;
         private readonly List<Game> installedGamesLibrary = new List<Game>();
-        static User()
-        {
-            User.OnUserEvent += message =>
-            {
-                Console.WriteLine(message);
-                Console.ReadKey(true);
-            };
-        }
+        public User(){}
     
         public User(EPlatform platform, Hardware hardware)
         {
@@ -25,11 +18,26 @@
             Hardware = hardware;            
         }
         public List<Game> GetInstalledGamesLibrary() => installedGamesLibrary;
+        public void Subscribe(IUserObserver observer)
+        {
+            observers.Add(observer);
+        }
+        public void Unsubscribe(IUserObserver observer)
+        {
+            observers.Remove(observer);
+        }
+        public void Notify(string message)
+        {
+            foreach (var observer in observers)
+            {
+                observer.Update(message);
+            }
+        }
         public bool ToCheckNetConnection()
         {
             if (!NetworkConnection)
             {
-                OnUserEvent?.Invoke("No internet connection.");
+                Notify("No internet connection.");
             }
             return NetworkConnection;
         }
@@ -37,7 +45,7 @@
         {
             if (installedGamesLibrary.Contains(game))
             {
-                OnUserEvent?.Invoke("Game has been already installed.");
+                Notify("Game has been already installed.");
             }
             return installedGamesLibrary.Contains(game);
         }
@@ -78,14 +86,14 @@
             {
                 return true;
             }
-            OnUserEvent?.Invoke("This game is not supported in your platform.");
+            Notify("This game is not supported in your platform.");
             return false;
         }
         public bool ToCheckGenre(Game game)
         {
             if(installedGamesLibrary.Any(existingGame => (existingGame as IGenre)?.GetGenre() == (game as IGenre)?.GetGenre()))
             {
-                OnUserEvent?.Invoke("You can`t install the game with genre you have already had.");
+                Notify("You can`t install the game with genre you have already had.");
                 return true;
             }
             else
@@ -97,19 +105,23 @@
         {
             if (!ToCheckGenre(game) && !ToCheckInstallation(game) && ToCheckPlatform(game))
             {
-                if (Hardware.HDD_capacity <= 100 && ToCheckNetConnection())
+                if (ToCheckNetConnection())
                 {
                     bool isBrowser = game is Browser;
                     if (!isBrowser)
                     {
-                        installedGamesLibrary.Add(game);
-                        Hardware.FillCapasity(game.Hardware.HDD_capacity);
-                        OnUserEvent?.Invoke("Game has been installed.");
+                        try
+                        {
+                            Hardware.FillCapasity(game.Hardware.HDD_capacity);
+                            installedGamesLibrary.Add(game);
+                            Notify("Game has been installed.");
+                        }
+                        catch (ArgumentOutOfRangeException ex)
+                        {
+                            Notify(ex.Message);
+                        }
+
                     }
-                }
-                else if (Hardware.HDD_capacity >= 100)
-                {
-                    OnUserEvent?.Invoke("Installation of this game is unavailable because of youe HDD capasity.");
                 }
             }
         }
@@ -126,9 +138,9 @@
                  (!needInstallation || ToCheckInstallation(game));
             if (!isSuitableControllers)
             {
-                OnUserEvent?.Invoke("Not all suitable controllers have been plugged.");
+                Notify("Not all suitable controllers have been plugged.");
             }
-            OnUserEvent?.Invoke(canLaunch ? "Game is launching." : "Game can't be launched.");
+            Notify(canLaunch ? "Game is launching." : "Game can't be launched.");
             game.IsLaunched = canLaunch;
         }       
         public Account? LogIn(string userName, string email, string password)
@@ -137,7 +149,7 @@
             {
                 if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
                 {
-                    OnUserEvent?.Invoke("Invalid input. Please provide all fields.");
+                    Notify("Invalid input. Please provide all fields.");
                     return null;
                 }
 
@@ -145,7 +157,7 @@
                 if (!AccountsStorage.Instance.Contains(account))
                 {
                     AccountsStorage.Instance.Add(account);
-                    OnUserEvent?.Invoke("You are logged in.");                   
+                    Notify("You are logged in.");                   
                     IsLoggedIn = true;
                     return account;
                 }
@@ -153,7 +165,7 @@
                 {
                     if (account.Password == password)
                     {
-                        OnUserEvent?.Invoke("You are logged in.");
+                        Notify("You are logged in.");
                         IsLoggedIn = true;
                         return account;
                     }
@@ -161,7 +173,7 @@
             }
             catch(ArgumentException)
             {
-                OnUserEvent?.Invoke("Invalid input. Please provide all fields.");
+                Notify("Invalid input. Please provide all fields.");
             }
             return null;
         }
@@ -172,13 +184,13 @@
                 IsPlaying = game.IsLaunched;
                 if (game.ProgressPercentage == 100)
                 {
-                    OnUserEvent?.Invoke("You have finished the game.");
+                    Notify("You have finished the game.");
                     StopPlaying();
                 }
             }
             else
             {
-                OnUserEvent?.Invoke("Game isn`t launched to play.");
+                Notify("Game isn`t launched to play.");
             }
         }
         public void StopPlaying()
@@ -186,16 +198,16 @@
             if (IsPlaying)
             {
                 IsPlaying = false;
-                OnUserEvent?.Invoke("You have stopped playing game.");
+                Notify("You have stopped playing game.");
             }
             else
             {
-                OnUserEvent?.Invoke("You aren`t playing to stop playing.");
+                Notify("You aren`t playing to stop playing.");
             }
         }
         public void Stream(Game game)
         {
-            OnUserEvent?.Invoke((game.Platform == EPlatform.Mobile||game.Platform==EPlatform.Console) 
+            Notify((game.Platform == EPlatform.Mobile||game.Platform==EPlatform.Console) 
                 && IsPlaying ? "Stream is running." : "It is unable to stream on this platform.");
             IsStreaming = (game.Platform == EPlatform.Mobile) && IsPlaying;
         }
@@ -204,11 +216,11 @@
             if (IsStreaming)
             {
                 IsStreaming = false;
-                OnUserEvent?.Invoke("Stream is stopped.");
+                Notify("Stream is stopped.");
             }
             else
             {
-                OnUserEvent?.Invoke("You didn't have a stream to stop it.");
+                Notify("You didn't have a stream to stop it.");
             }
         }        
         public void ConnectController(EController controller)
@@ -218,7 +230,7 @@
             {
                 Hardware.controllers.Add(controller);
             }
-            OnUserEvent?.Invoke(isPlugged ? "New controller has been plugged." : "You can`t plug this type of controller once more.");
+            Notify(isPlugged ? "New controller has been plugged." : "You can`t plug this type of controller once more.");
         }
     }
 }

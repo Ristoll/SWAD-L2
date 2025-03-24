@@ -2,7 +2,7 @@
 
 namespace APSW_L_1
 {
-    public static class DataSavier<T>
+    public static class DataSaver<T>
     {
         public static void SaveData(List<T> data)
         {

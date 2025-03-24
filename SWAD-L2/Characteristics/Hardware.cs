@@ -61,14 +61,13 @@
             get => this._HDD;
             private set
             {
-                if (value >= 0 && value <= 10)
+                if (value >= 0 && value <= 100)
                 {
                     this._HDD = value;
                 }
                 else
                 {
-                    Console.WriteLine("You are out of free space in HDD.");
-                    Console.ReadKey();
+                    throw new ArgumentOutOfRangeException(nameof(value), _HDD,"You cannot download this game. Your HDD is full.");
                 }
             }
         }
@@ -95,8 +94,8 @@
         }
 
         public void FillCapasity(int capasity)
-        {
-            HDD_capacity += capasity;
+        { 
+            HDD_capacity -= capasity;            
         }
     }
 }
