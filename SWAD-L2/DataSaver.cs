@@ -2,27 +2,35 @@
 
 namespace APSW_L_1
 {
-    public static class DataSaver<T>
+    public static class DataSaver
     {
-        public static void SaveData(List<T> data)
+        private static string _fileName = @"C:\Users\Крістіна\OneDrive\Рабочий стол\AccountsData.txt";
+        public static void SaveData(List<Account> data)
         {
-            string fileName = $"{typeof(T).Name}sData.txt";
+            
 
-            using FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write);
+            using FileStream fs = new FileStream(_fileName, FileMode.Create, FileAccess.Write);
             
             JsonSerializer.Serialize(fs, data, new JsonSerializerOptions { WriteIndented = true });
         }
 
-        public static List<T> LoadData()
+        public static List<Account> LoadData()
         {
-            string fileName = $"{typeof(T).Name}sData.txt";
-            FileInfo fileInfo = new FileInfo(fileName);
-            if (!File.Exists(fileName) || fileInfo.Length == 0)
-                return new List<T>();
+            FileInfo fileInfo = new FileInfo(_fileName);
+            if (!File.Exists(_fileName) || fileInfo.Length == 0)
+            {
+                Console.WriteLine("File with data does not exist or is empty.");
+                Console.ReadKey();
+                return new List<Account>();
+            }
 
-            using FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            return JsonSerializer.Deserialize<List<T>>(fs) ?? new List<T>();
+            using (FileStream fs = new FileStream(_fileName, FileMode.Open, FileAccess.Read))
+            {
+                var data = JsonSerializer.Deserialize<List<Account>>(fs) ?? new List<Account>();
+                return data;
+            }
         }
+
     }
 
 }

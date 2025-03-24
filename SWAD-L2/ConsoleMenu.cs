@@ -6,7 +6,7 @@
         {
             User currUser = ChooseUser(users);
             List<Game> neededGames = new List<Game>();
-            foreach(Game game in games)
+            foreach (Game game in games)
             {
                 if (game.Platform == currUser.Platform)
                 {
@@ -38,7 +38,7 @@
         private static void ChooseGameLibrary(List<Game> games, User user)
         {
 
-            List<string> items = new List<string> { "My games list", "Games Store", "Connect Controller", 
+            List<string> items = new List<string> { "My games list", "Games Store", "Connect Controller",
                                                     "Switch Internet Connection", "Exit"};
             int index = 0;
 
@@ -46,7 +46,7 @@
             {
                 Console.Clear();
                 Console.WriteLine("Choose games library:");
-                DrawMenu(items, index);                
+                DrawMenu(items, index);
                 var key = Console.ReadKey(true).Key;
                 if (key == ConsoleKey.Enter)
                 {
@@ -86,7 +86,7 @@
         }
         private static void ChooseController(User user)
         {
-            List<EController> controllersList = new List<EController>() { EController.Gamepad, 
+            List<EController> controllersList = new List<EController>() { EController.Gamepad,
                                                         EController.Mouse, EController.Keyboard};
             List<string> items = controllersList.Select(controller => controller.ToString()).ToList();
             int index = 0;
@@ -156,12 +156,12 @@
                     {
                         case "Install":
                             user.Install(game);
-                            break;                            
+                            break;
                         case "Play":
                             if (user.ToCheckInstallation(game))
                             {
-                                Console.WriteLine("Launching game: ");
-                                Account account = LogInMenu(user)!;
+                                Console.WriteLine("Launching game: ");                                
+                                Account account = ChooseAccountType(user);
                                 user.Launch(game, user.IsLoggedIn);
                                 user.Play(game);
                                 bool continuePlay;
@@ -169,7 +169,7 @@
                                 {
                                     do
                                     {
-                                        continuePlay = PlayingMenu(game, user, account!);
+                                        continuePlay = PlayingMenu(game, user, account);
                                     } while (continuePlay);
                                 }
                             }
@@ -202,7 +202,18 @@
             {
                 Console.Clear();
                 Console.WriteLine("You are playing:");
-                Console.WriteLine($"Progress in persent: {game.ProgressPercentage}");
+                int progress = 0;
+                if (account.GamesData.ContainsKey(game.Name))
+                {
+                    progress = account.GamesData[game.Name].Progress;
+                }
+                else
+                {
+                    account.GamesData[game.Name] = new GameData();
+                    account.GamesData[game.Name].Progress = 0;
+                    progress = 0;
+                }
+                Console.WriteLine($"Progress: {progress}%");
                 DrawMenu(items, index);
 
                 var key = Console.ReadKey(true).Key;
@@ -212,7 +223,8 @@
                     {
                         case "Continue play":
                             user.Play(game);
-                            if (game.ProgressPercentage <= 100)
+                            game.ProgressPercentage = progress;
+                            if (progress <= 100)
                             {
                                 game.ProgressPercentage += 5;
                                 account.SetProgress(game, game.ProgressPercentage);
@@ -242,17 +254,76 @@
                 index = NavigationMenu(index, items.Count - 1, key);
             }
         }
-
-        private static Account LogInMenu(User user)
+        public static Account ChooseAccountType(User user)
         {
-                Console.WriteLine("Input info about your account/Create your account:");
-                Console.WriteLine("Input userName:");
-                string name = Console.ReadLine()!;
-                Console.WriteLine("Input email:");
-                string email = Console.ReadLine()!;
-                Console.WriteLine("Input password: ");
-                string password = Console.ReadLine()!;
-                return user.LogIn(name, email, password)!;           
+            List<string> items = new List<string> { "Sign In", "Register" };
+            int index = 0;
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Welcome back in game!");
+                DrawMenu(items, index);
+                var key = Console.ReadKey(true).Key;
+
+                if (key == ConsoleKey.Enter)
+                {
+                    switch (items[index])
+                    {
+                        case "Sign In":
+                            return SignInMenu(user);
+                        case "Register":
+                            return RegisterMenu(user);
+                    }
+                }
+
+                index = NavigationMenu(index, items.Count - 1, key);
+            }
+        }
+
+        public static Account SignInMenu(User user)
+        {
+            List<string> items = AccountsStorage.Instance.Accounts.Select(account => account.UserName).ToList();
+            int index = 0;
+            if (items.Count == 0)
+            {
+                Console.WriteLine("There are no accounts. You must register first.");
+                return RegisterMenu(user);
+            }
+            while (true)
+            {
+                Console.Clear();
+                Console.WriteLine("Choose account:");
+
+                DrawMenu(items, index);
+                var key = Console.ReadKey(true).Key;
+                if (key == ConsoleKey.Enter)
+                {
+                    Console.WriteLine("Input password:");
+                    string password = Console.ReadLine()!;
+                    if (password == AccountsStorage.Instance.Accounts[index].Password)
+                    {
+                        user.IsLoggedIn = true;
+                        return AccountsStorage.Instance.Accounts[index];
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid password.");
+                    }
+                }
+                index = NavigationMenu(index, items.Count - 1, key);
+            }
+        }
+        private static Account RegisterMenu(User user)
+        {
+            Console.WriteLine("Create your account:");
+            Console.WriteLine("Input userName:");
+            string name = Console.ReadLine()!;
+            Console.WriteLine("Input email:");
+            string email = Console.ReadLine()!;
+            Console.WriteLine("Input password: ");
+            string password = Console.ReadLine()!;
+            user.IsLoggedIn = false;
+            return user.LogIn(name, email, password)!;           
         }
         private static int NavigationMenu(int index, int maxIndex, ConsoleKey key)
         {

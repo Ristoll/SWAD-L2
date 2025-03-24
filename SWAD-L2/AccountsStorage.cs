@@ -9,7 +9,7 @@
         public List<Account> Accounts { get; private set; }
         private AccountsStorage()
         {
-            Accounts = DataSaver<Account>.LoadData();
+            Accounts = DataSaver.LoadData();
         }
         public static AccountsStorage Instance
         {
@@ -25,7 +25,7 @@
         public void Add(Account account)
         { 
             Accounts.Add(account);
-            DataSaver<Account>.SaveData(Accounts);
+            DataSaver.SaveData(Accounts);
         }
 
         public bool Contains(Account account)
@@ -40,7 +40,7 @@
 
         public void SaveAccounts()
         {
-            DataSaver<Account>.SaveData(Accounts);
+            DataSaver.SaveData(Accounts);
         }
     }
 }
