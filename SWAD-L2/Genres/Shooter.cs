@@ -2,9 +2,7 @@
 {
     public class Shooter : Game, IShooter
     {
-        public Shooter(Game game) 
-            :base(game.Name, game.Platform, game.Hardware)
-        { }
+        public Shooter(string name, EPlatform platform, Hardware hardware) : base(name, platform, hardware) { }
         public string GetGenre() => "Shooter";
     }
 }

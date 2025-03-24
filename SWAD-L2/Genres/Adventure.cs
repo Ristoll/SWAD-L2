@@ -2,9 +2,7 @@
 {
     public class Adventure : Game, IAdventure
     {
-        public Adventure(Game game)
-            : base(game.Name, game.Platform, game.Hardware)
-        { }
+        public Adventure(string name, EPlatform platform, Hardware hardware) : base(name, platform, hardware) { }
         public string GetGenre() => "Adventure";
     }
 

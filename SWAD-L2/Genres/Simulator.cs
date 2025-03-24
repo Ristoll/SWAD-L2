@@ -2,9 +2,7 @@
 {
     public class Simulator : Game, ISimulator
     {
-        public Simulator(Game game) 
-            :base(game.Name, game.Platform, game.Hardware)
-        { }
+       public Simulator(string name, EPlatform platform, Hardware hardware) : base(name, platform, hardware) { }
         public string GetGenre() => "Simulator";
     }
 }

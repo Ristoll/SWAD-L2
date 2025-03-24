@@ -1,6 +1,6 @@
 ﻿namespace APSW_L_1
 {
-    public class Game
+    public abstract class Game
     {
         private int usersRates;
         private int usersSummOfRates;

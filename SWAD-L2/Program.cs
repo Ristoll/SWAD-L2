@@ -16,47 +16,38 @@
             List<User> users = new List<User>() {desktopUser, mobileUser, consoleUser};
 
             Hardware minecraftHardware = new Hardware(3, 4, 2, 15, Hardware.ControllersForPC());
-            Game gameM = new Game("Minecraft", EPlatform.Desktop, minecraftHardware);
-            Adventure minecraftGame = new Adventure(gameM);
+            Adventure minecraftGameA = new Adventure("Minecraft", EPlatform.Desktop, minecraftHardware);
 
             Hardware fortniteHardware = new Hardware(4, 3, 4, 25, Hardware.ControllersForConsole());
-            Game gameF = new Game("Fortnite", EPlatform.Console, fortniteHardware);
-            Shooter fortniteS = new Shooter(gameF);
-            Online fortniteGameO = new Online(fortniteS);
+            Shooter gameF = new Shooter("Fortnite", EPlatform.Console, fortniteHardware);
+            Online fortniteGameO = new Online(gameF);
 
             Hardware TRexhardware = new Hardware(2, 1,2,0,Hardware.ControllersForMobile());
-            Game gameT = new Game("T-Rex", EPlatform.Mobile, TRexhardware);
-            Simulator gameS = new Simulator(gameT);
-            Browser TRexGame = new Browser(gameS);
+            Simulator gameT = new Simulator("T-Rex", EPlatform.Mobile, TRexhardware);
+            Browser TRexGame = new Browser(gameT);
 
             Hardware HKHardware = new Hardware(3,2,3,15,Hardware.ControllersForPC());
-            Game gameHK = new Game("Hollow Knight", EPlatform.Desktop, HKHardware);
-            Adventure HollowKnightGame = new Adventure(gameHK);
+            Adventure HollowKnightGame = new Adventure("Hollow Knight", EPlatform.Desktop, HKHardware);
 
             Hardware PUBGMhardware = new Hardware(4, 2, 4, 50, Hardware.ControllersForMobile());
-            Game gamePM = new Game("PUBG: Mobile", EPlatform.Mobile, PUBGMhardware);
-            Shooter PUBGMGame = new Shooter(gamePM);
+            Shooter PUBGMGame = new Shooter("PUBG: Mobile", EPlatform.Mobile, PUBGMhardware);
             Online PUBGMGameO = new Online(PUBGMGame);
 
             Hardware DetroitHardware = new Hardware(4, 5, 4, 40, Hardware.ControllersForConsole());
-            Game DetroitGame = new("Detroit: Become Human", EPlatform.Console, DetroitHardware);
-            Adventure DetroitGameA = new Adventure(DetroitGame);
+            Adventure DetroitGameA = new Adventure("Detroit: Become Human", EPlatform.Console, DetroitHardware);
 
             Hardware CSHardware = new Hardware(5,4,3,40, Hardware.ControllersForPC());
-            Game CSG = new Game("Counter-Strike", EPlatform.Desktop, CSHardware);
-            Shooter CSGS = new Shooter(CSG);
+            Shooter CSGS = new Shooter("Counter-Strike", EPlatform.Desktop, CSHardware);
             Online CSGO = new Online(CSGS);
 
             Hardware LDEHardware = new Hardware(2,3,1,25, Hardware.ControllersForMobile());
-            Game LDEGame = new Game("Last Day On Earth", EPlatform.Mobile, LDEHardware);
-            Adventure LDEGameA = new Adventure(LDEGame);
+            Adventure LDEGameA = new Adventure("Last Day On Earth", EPlatform.Mobile, LDEHardware);
             Online LDEGameO = new Online(LDEGameA);
 
             Hardware TLOUHardware = new Hardware(3,4,4,20, Hardware.ControllersForConsole());
-            Game TLOUGame = new Game("The Last Of Us", EPlatform.Console, TLOUHardware);
-            Adventure TLOUGameA = new Adventure(TLOUGame);
+            Adventure TLOUGameA = new Adventure("The Last Of Us", EPlatform.Console, TLOUHardware);
 
-            List<Game> gamesStore = new List<Game>() {minecraftGame, fortniteGameO, TRexGame, HollowKnightGame, 
+            List<Game> gamesStore = new List<Game>() {minecraftGameA, fortniteGameO, TRexGame, HollowKnightGame, 
                                                             PUBGMGameO, DetroitGameA, CSGO, LDEGameO, TLOUGameA};
 
             ConsoleMenu.StartConsole(users, AccountsStorage.Instance.Accounts, gamesStore);
