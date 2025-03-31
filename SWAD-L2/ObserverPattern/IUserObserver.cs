@@ -2,6 +2,6 @@
 {
     public interface IUserObserver
     {
-        void Update(string message);
+        void Update(object sender, UserEventArgs e);
     }
 }

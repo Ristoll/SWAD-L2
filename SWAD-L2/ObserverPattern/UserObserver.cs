@@ -2,9 +2,9 @@
 {
     public class UserObserver : IUserObserver //СПОСТЕРІГАЧ
     {
-        public void Update(string message)
+        public void Update(object sender, UserEventArgs e)
         {
-            Console.WriteLine(message);
+            Console.WriteLine(e.Message);
             Console.ReadKey();
         }
     }

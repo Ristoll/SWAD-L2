@@ -19,7 +19,7 @@
   <Class Name="APSW_L_1.Hardware">
     <Position X="0.5" Y="3" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAQgIAAAAAAASIAAAAAABACIAAACAAAAAAAAAAQBAAA=</HashCode>
+      <HashCode>AARAIAAAAAAACIAAAAAABACAAAICAAAAAAAIAAQBAIA=</HashCode>
       <FileName>Characteristics\Hardware.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -50,7 +50,7 @@
   <Class Name="APSW_L_1.Account">
     <Position X="12.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAQAAgCAAACAgAAACAAAAAAQAAAACAQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAQAAgCAAACAgAAACAAAAAAAAAAACAQAAAAAAAAA=</HashCode>
       <FileName>Account.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -64,15 +64,15 @@
   <Class Name="APSW_L_1.ConsoleMenu">
     <Position X="7.75" Y="5.25" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAIAAAAAAAQAICIAgAAQIAAAAAAAAIAAAAgAA=</HashCode>
+      <HashCode>AQAAAAAAIAAAAAAAQQACIAgAgQIAAAAAAAAIAAAAgAA=</HashCode>
       <FileName>ConsoleMenu.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="APSW_L_1.DataSavier&lt;T&gt;">
+  <Class Name="APSW_L_1.DataSaver">
     <Position X="12.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>DataSavier.cs</FileName>
+      <HashCode>AAAAAAAAAAAQAAQAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataSaver.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="APSW_L_1.Game">
@@ -99,9 +99,24 @@
   <Class Name="APSW_L_1.User">
     <Position X="10" Y="0.5" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAIEECUAACEAAQAAAQYAFgAiAQCAAIABAA=</HashCode>
+      <HashCode>AAAIAAAAQAAIEECUAACAAAQAAAQaAFhAyAQCAAIABAA=</HashCode>
       <FileName>User.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="APSW_L_1.UserEventArgs">
+    <Position X="14" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>ObserverPattern\UserEventArgs.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="APSW_L_1.UserObserver">
+    <Position X="12.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ObserverPattern\UserObserver.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="APSW_L_1.IBrowser" Collapsed="true">
     <Position X="0.5" Y="1.75" Width="1.5" />
@@ -143,6 +158,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Genres\ISimulator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="APSW_L_1.IUserObserver">
+    <Position X="12.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ObserverPattern\IUserObserver.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="APSW_L_1.EController">

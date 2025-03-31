@@ -1,6 +1,8 @@
-﻿namespace APSW_L_1
+﻿using SWAD_L2;
+
+namespace APSW_L_1
 {
-    public class User //ГЕНЕРАТОР ПОДІЙ
+    public class User : IUserObservable //ГЕНЕРАТОР ПОДІЙ
     {
         private readonly List<IUserObserver> observers = new List<IUserObserver>();
         public EPlatform Platform { get; }
@@ -28,9 +30,10 @@
         }
         public void Notify(string message)
         {
+            var eventArgs = new UserEventArgs(message);
             foreach (var observer in observers)
             {
-                observer.Update(message);
+                observer.Update(this, eventArgs);
             }
         }
         public bool ToCheckNetConnection()
